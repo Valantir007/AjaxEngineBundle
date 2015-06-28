@@ -1,0 +1,15 @@
+{% extends "AjaxEngineBundle::layout.html.twig" %}
+
+{% block body %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-message">
+            <em>Notice</em>: {{ flashMessage }}
+        </div>
+    {% endfor %}
+    <div class="container ajax-container">
+        <div class="block">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
+{% endblock body %}

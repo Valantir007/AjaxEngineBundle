@@ -42,7 +42,16 @@
         //event submit'u
         function onSubmit(event) {
             $('body').on('submit', 'form:not(.' + settings.offClass + ')', function(e){
-                var $this = $(this);
+                var $this = $(this),
+                    action = $this.attr('action'),
+                    origin = window.location.origin;
+                
+                if (typeof action !== typeof undefined && action !== false) {
+                    if(action !== '' && action.indexOf(origin) !== 0) {
+                        return true;
+                    }
+                }
+                
                 ajax({
                     url: $this.attr('action'),
                     data: $this.serialize(),
@@ -65,7 +74,7 @@
             };
         }
         
-        //ajax
+        //ajax - data - tablica z parametrami
         function ajax(data){
             data = $.extend(true, {
                 url: data.url,

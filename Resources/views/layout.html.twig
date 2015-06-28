@@ -1,26 +1,7 @@
-{% extends app.request.xmlHttpRequest ? "AjaxEngineBundle::ajax-layout.html.twig" : "TwigBundle::layout.html.twig" %}
-
-{% block head %}
-    <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/acmedemo/css/demo.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/ajaxengine/css/ajax-engine.css') }}" />
-    <script src="{{ asset('bundles/ajaxengine/js/jquery/jquery-1.11.2.min.js') }}"></script>
-    <script src="{{ asset('bundles/ajaxengine/js/ajaxengine/ajax-engine-1.0.0.js') }}"></script>
-    <script src="{{ asset('bundles/ajaxengine/js/modernizr/modernizr-2.8.3.js') }}"></script>
-    <script>
-        $(document).ready(function(){
-            console.log('test');
-            $('.ajax-container').ajaxEngine({
-                
-            });
-        });
-    </script>
-{% endblock %}
+{% extends app.request.xmlHttpRequest ? "AjaxEngineBundle::ajax-layout.html.twig" : "AjaxEngineBundle::main.html.twig" %}
 
 {% block body %}
-{#    {% embed 'AjaxEngineBundle::body.html.twig' %}#}
-        {% block content %}{% endblock %}
-{#    {% endembed %}#}
+    {% block content %}{% endblock %}
 {% endblock %}
         
     

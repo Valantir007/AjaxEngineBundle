@@ -3,11 +3,12 @@
 namespace AjaxEngineBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Description of ResponseListener
+ * ResponseListener checks flash_message type parameter
+ * if is set 'header' then event listener sets header with flash messages
+ * 
  * @author Kamil
  */
 class AjaxEngineResponseListener {
@@ -15,21 +16,16 @@ class AjaxEngineResponseListener {
     protected $container;
     protected $session;
     
-    public function __construct($container, $session) {
+    public function __construct(ContainerInterface $container) {
         $this->container = $container;
-        $this->session = $session;
     }
     
     public function onKernelResponse(FilterResponseEvent $event) {
-//        $referer = $event->getRequest()->headers->get('referer');
-//        
-////        wypluj($this->session->getFlashBag());
-//        if($event->isMasterRequest()) {
-//            $event->getResponse()->headers->set('Custom-Referer', ($referer) ? $referer : '');
-////            $flashMessages = $event->getRequest()->getSession()->getFlashBag()->all();
-////            var_dump($event->getRequest()->getSession()->getFlashBag());die;
-////            $event->getRequest()->getSession()->getFlashBag()->get('notice', 'Message sent!');
-////            $event->getResponse()->headers->set('Flash-Messages', json_encode($flashMessages));
-//        }
+        $ajaxEngineConfig = $this->container->getParameter('ajax_engine');
+        
+        if(isset($ajaxEngineConfig['flash_messages']['type']) && $ajaxEngineConfig['flash_messages']['type'] == 'header' && $event->isMasterRequest()) {
+            $flashMessages = $event->getRequest()->getSession()->getFlashBag()->all();
+            $event->getResponse()->headers->set('Flash-Messages', json_encode($flashMessages));
+        }
     }
 }

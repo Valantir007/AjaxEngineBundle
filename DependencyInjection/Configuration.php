@@ -19,10 +19,21 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('ajax_engine');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('flash_messages')
+                    ->children()
+                        ->scalarNode('type')
+                            ->defaultValue('html')
+                            ->validate()
+                                ->ifNotInArray(array('html', 'header'))
+                                ->thenInvalid('The %s type of messages is not supported')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

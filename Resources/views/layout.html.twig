@@ -1,6 +1,19 @@
 {% extends app.request.xmlHttpRequest ? "AjaxEngineBundle::ajax-layout.html.twig" : "AjaxEngineBundle::main.html.twig" %}
 
 {% block body %}
+    {% if flashMessageType() == 'html' %}
+        {% block flashMessage %}
+            <div class="flash-messages">
+                {% for flashType, flashMessages in app.session.flashbag.all %}
+                    <div class="alert alert-{{ flashType }} ">
+                        {% for flashMessage in flashMessages %}
+                            {{ flashMessage }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endblock flashMessage %}
+    {% endif %}
     {% block content %}{% endblock %}
 {% endblock %}
         

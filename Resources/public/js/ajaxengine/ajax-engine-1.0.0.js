@@ -2,20 +2,20 @@
     $.fn.ajaxEngine = function(options) {
         
         var $container = $(this),
-            settings = $.extend({ //ustawienia do nadpisania
+            settings = $.extend({ //settings to override
                 ajax: {
                     loader: '/bundles/ajaxengine/image/ajax-loader.gif',
                     backdrop: true
                 }
             }, options),
                     
-            methods = { //metody publiczne
+            methods = { //public methods
                 destroy: function() {
                     console.log('Ajax-engine destroyed');
                 }
             };
         
-        settings = $.extend(true, { //ustawienia i dane pluginu
+        settings = $.extend(true, { //settings
             loaded: false,
             ajax: {
                 loaderContainer: ''
@@ -24,14 +24,21 @@
             fleshMessageClass: 'flesh-message'
         }, settings);
         
-        //event klikniecia
+        //click event
         function onClick() {
             $('body').on('click', 'a:not(.' + settings.offClass + ')', function(e){
-                var $this = $(this);
+                var $this = $(this),
+                    href = $this.attr('href'),
+                    host = $this.prop('host'),
+                    protocol = $this.prop('protocol');
+                    
+                if(!isCurrentHost(protocol + '//' + host)) {
+                    return true;
+                }
                 
                 if($this.parents('.'+settings.offClass).length === 0) {
                     ajax({
-                        url: $this.attr('href')
+                        url: href
                     });
                     return false;
                 }
@@ -39,17 +46,14 @@
             });
         }
         
-        //event submit'u
+        //submit event
         function onSubmit(event) {
             $('body').on('submit', 'form:not(.' + settings.offClass + ')', function(e){
                 var $this = $(this),
-                    action = $this.attr('action'),
-                    origin = window.location.origin;
+                    action = $this.attr('action');
                 
-                if (typeof action !== typeof undefined && action !== false) {
-                    if(action !== '' && action.indexOf(origin) !== 0) {
-                        return true;
-                    }
+                if(!isCurrentHost(action)) {
+                    return true;
                 }
                 
                 ajax({
@@ -62,11 +66,22 @@
             });
         }
         
+        //checks if url is from current host
+        function isCurrentHost(url) {
+            var origin = window.location.origin;
+            if (typeof url !== typeof undefined && url !== false) {
+                if(url !== '' && url.indexOf(origin) !== 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
         //eventy przeglądarki
         function onHistory() {
             window.onpopstate = function(event) {                
                 ajax({
-                    url: location.pathname, //po nasłuchu w location.pathname jest aktualny url z historii
+                    url: location.pathname,
                     history: true
                 });
                 
@@ -74,13 +89,12 @@
             };
         }
         
-        //ajax - data - tablica z parametrami
+        //main function - sends requests to server
         function ajax(data){
             data = $.extend(true, {
                 url: data.url,
                 type: (data.method) ? data.method : 'GET',
                 beforeSend: function(){
-                    console.log(settings.ajax.loaderContainer);
                     settings.ajax.loaderContainer.removeClass('hide');
                 }
             }, data);
@@ -93,14 +107,14 @@
                     
                     settings.ajax.loaderContainer.addClass('hide');
                     
-                    //Jeśli nie jest to akcja pochodząca z historii, to wywolujemy pushState
+                    //if is not from history then pushState
                     if($('html').hasClass('history') && !data.history) {
                         history.pushState('', data.url, data.url);
                     }
                 });
         };
         
-        //przygotowuje loader na potrzeby ajaxa
+        //prepares loader
         function buildLoader() {
             var $loader = $('<div><div class="engine-loader-wrapper"><img class="engine-loader" src="' + settings.ajax.loader + '" /></div></div>'),
                 loaderBackdrop = (settings.ajax.backdrop) ? 'engine-backdrop' : '';
@@ -127,9 +141,9 @@
         }
         
         return this.each(function() {
-            //ciało naszego pluginu
+            //body of plugin
             if(methods[options]){   
-                //wywołana metoda publiczna
+                //call public method
                 return methods[options].apply( this, arguments );
             } else if (typeof options === 'object' || ! options ){
                 if($container.length > 0){

@@ -61,10 +61,6 @@ All content need to be in content block like this:
 {% endblock content %}
 ```
 
-### Step 4
-
-Now you need to add class "ajax-container" to your container, which refers element of your page that will be updated.
-
 ## Support
 
 Bundle uses jQuery 1.11.2 and modernizr in version 2.8.3.

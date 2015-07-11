@@ -1,0 +1,30 @@
+{
+    "name" : "valantir/ajaxenginebundle",
+    "description" : "Engine to sends all requests to server via ajax",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Kamil Demurat",
+        "email" : "kamil.demurat@gmail.com"
+    }],
+    "keywords" : [
+        "ajax,engine,bundle,symfony2"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Valantir\\AjaxEngineBundle" : ""
+        }
+    },
+    "target-dir" : "Valantir/AjaxEngineBundle",
+    "repositories" : [{
+    }],
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "1.0.0-dev"
+        }
+    }
+}

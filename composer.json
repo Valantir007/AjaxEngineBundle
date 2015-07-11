@@ -3,11 +3,11 @@
     "description" : "Engine to sends all requests to server via ajax",
     "type" : "symfony-bundle",
     "authors" : [{
-        "name" : "Kamil Demurat",
+        "name" : "Valantir",
         "email" : "kamil.demurat@gmail.com"
     }],
     "keywords" : [
-        "ajax,engine,bundle,symfony2"
+        "ajax","engine","bundle","symfony2"
     ],
     "license" : [
         "MIT"

@@ -1,6 +1,6 @@
 <?php
 
-namespace AjaxEngineBundle\DependencyInjection;
+namespace Valantir\AjaxEngineBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AjaxEngineBundle\Twig;
+namespace Valantir\AjaxEngineBundle\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

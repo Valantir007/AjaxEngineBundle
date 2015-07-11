@@ -1,6 +1,6 @@
 <?php
 
-namespace AjaxEngineBundle;
+namespace Valantir\AjaxEngineBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

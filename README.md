@@ -1,5 +1,5 @@
 #AjaxEngineBundle
-Bundle supports jQuery 1.11.2 and uses modernizr in version 2.8.3.
+Bundle uses jQuery 1.11.2 and modernizr in version 2.8.3.
 
 Tested on :
  - Chrome 43, 
@@ -12,5 +12,5 @@ If you want to flash messages will be send to browser as header add below code t
 ```
 ajax_engine:
     flash_messages:
-        type: html #header or html - if header then flash messages are in header "Flash-Messages" in json format
+        type: header #header or html - if header then flash messages are in header "Flash-Messages" in json format
 ```

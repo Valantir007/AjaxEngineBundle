@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="kernel.listener.response_listener" class="AjaxEngineBundle\EventListener\AjaxEngineResponseListener">
+        <service id="kernel.listener.response_listener" class="Valantir\AjaxEngineBundle\EventListener\AjaxEngineResponseListener">
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
             <argument type="service" id="service_container" />
         </service>

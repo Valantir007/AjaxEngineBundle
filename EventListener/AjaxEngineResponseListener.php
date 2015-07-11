@@ -1,6 +1,6 @@
 <?php
 
-namespace AjaxEngineBundle\EventListener;
+namespace Valantir\AjaxEngineBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;

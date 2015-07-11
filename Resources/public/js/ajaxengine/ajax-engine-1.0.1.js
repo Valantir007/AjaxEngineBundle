@@ -11,6 +11,7 @@
                     
             methods = { //public methods
                 destroy: function() {
+                    $('.engine-on').removeClass('engine-on');
                     console.log('Ajax-engine destroyed');
                 }
             };
@@ -24,37 +25,23 @@
             fleshMessageClass: 'flesh-message'
         }, settings);
         
-        //click event
+        //klikniecie w link
         function onClick() {
-            $('body').on('click', 'a:not(.' + settings.offClass + ')', function(e){
+            $('body').on('click', 'a.engine-on', function(e){
                 var $this = $(this),
-                    href = $this.attr('href'),
-                    host = $this.prop('host'),
-                    protocol = $this.prop('protocol');
-                    
-                if(!isCurrentHost(protocol + '//' + host)) {
-                    return true;
-                }
+                    href = $this.attr('href');
                 
-                if($this.parents('.'+settings.offClass).length === 0) {
-                    ajax({
-                        url: href
-                    });
-                    return false;
-                }
-                
+                ajax({
+                    url: href
+                });
+                return false;
             });
         }
         
-        //submit event
-        function onSubmit(event) {
-            $('body').on('submit', 'form:not(.' + settings.offClass + ')', function(e){
-                var $this = $(this),
-                    action = $this.attr('action');
-                
-                if(!isCurrentHost(action)) {
-                    return true;
-                }
+        //wysylanie formularzy
+        function onSubmit() {
+            $('body').on('submit', 'form.engine-on', function(e){
+                var $this = $(this);
                 
                 ajax({
                     url: $this.attr('action'),
@@ -69,10 +56,8 @@
         //checks if url is from current host
         function isCurrentHost(url) {
             var origin = window.location.origin;
-            if (typeof url !== typeof undefined && url !== false) {
-                if(url !== '' && url.indexOf(origin) !== 0) {
-                    return false;
-                }
+            if (typeof url !== typeof undefined && url !== false && url !== '' && url.indexOf(origin) !== 0) {
+                return false;
             }
             return true;
         }
@@ -101,16 +86,21 @@
             
             
             $.ajax(data)
-                .done(function(response){
+                .done(function(response, status, xhr){
+                    $container.trigger('beforeDone', [{'response': response, 'status': status, 'xhr': xhr}]);
                     $container.html(response);
+                    $container.trigger('afterDone', [{'response': response, 'status': status, 'xhr': xhr}]);
                 }).always(function(response, status, xhr){
-                    
+                    $container.trigger('beforeAlways', [{'response': response, 'status': status, 'xhr': xhr}]);
                     settings.ajax.loaderContainer.addClass('hide');
                     
                     //if is not from history then pushState
                     if($('html').hasClass('history') && !data.history) {
                         history.pushState('', data.url, data.url);
                     }
+                    
+                    addEngineClass();
+                    $container.trigger('afterAlways', [{'response': response, 'status': status, 'xhr': xhr}]);
                 });
         };
         
@@ -126,9 +116,40 @@
             settings.ajax.loaderContainer = $loader;
         }
         
-        //odpalana przed zainicjowaniem ajaxa
+        //call before initialization ajax engine
         function prependInit() {
             buildLoader();
+            addEngineClass();
+        }
+
+        //adds engine-on class to forms and a tags if action and href attribute are from current host
+        function addEngineClass() {
+            $container.trigger('beforeAddClass');
+            $('form:not(.' + settings.offClass + ')').each(function(index, element){
+                var $this = $(element),
+                    action = $this.attr('action');
+                
+                //jesli nie ma rodzica, ktory ma klase wylaczajaca silnik i form posiada aktualny host to dodajemy klase
+                if($this.parents('.'+settings.offClass).length === 0) {   
+                    if(isCurrentHost(action)) {
+                        $this.addClass('engine-on');
+                    }
+                }
+            });
+            
+            $('a:not(.' + settings.offClass + ')').each(function(index, element){
+                var $this = $(element),
+                    host = $this.prop('host'),
+                    protocol = $this.prop('protocol');
+                    
+                //jesli nie ma rodzica, ktory ma klase wylaczajaca silnik i link posiada aktualny host to dodajemy klase
+                if($this.parents('.'+settings.offClass).length === 0) {    
+                    if(isCurrentHost(protocol + '//' + host)) {
+                        $this.addClass('engine-on');
+                    }
+                }
+            });
+            $container.trigger('afterAddClass');
         }
         
         //inicjuje eventy
@@ -147,8 +168,10 @@
                 return methods[options].apply( this, arguments );
             } else if (typeof options === 'object' || ! options ){
                 if($container.length > 0){
-                    prependInit();
-                    init();
+                    if(!settings.loaded) {
+                        prependInit();
+                        init();
+                    }
                 } else {
                     console.error('No container');
                 }

@@ -15,7 +15,7 @@ To install bundle in your project, add below line to your composer.json file:
     }
 }
 ```
-NOTE: Please replace dev-master with the latest stable version, for example 1.0.3.
+NOTE: Please replace dev-master with the latest stable version, for example 1.0.1.
 
 Then install bundle by running update command:
 
@@ -71,3 +71,14 @@ Tested on :
  - Opera 30.0, 
  - Safari 5.1.7, 
  - IE 11
+
+## Events
+
+|Event name|Description|Parameters|
+|:-----------|:------------|:----------|
+|beforeAddClass | calls before engine add class "engine-on" to links and forms|-|
+|afterAddClass | calls after engine add class "engine-on" to links and forms|-|
+|beforeDone | calls before done function - before data from request will be added to ajax-container|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
+|afterDone | calls after done function - after data from request will be added to ajax-container|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
+|beforeAlways | calls before always function|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
+|afterAlways | calls after always function|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|

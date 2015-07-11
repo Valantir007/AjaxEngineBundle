@@ -2,6 +2,7 @@
     "name" : "valantir/ajaxenginebundle",
     "description" : "Engine to sends all requests to server via ajax",
     "type" : "symfony-bundle",
+    "homepage": "https://github.com/Valantir007/AjaxEngineBundle",
     "authors" : [{
         "name" : "Valantir",
         "email" : "kamil.demurat@gmail.com"
@@ -21,8 +22,6 @@
     },
     "target-dir" : "Valantir/AjaxEngineBundle",
     "repositories" : [{
-        "type" : "vcs",
-        "url" : "https://github.com/Valantir007/AjaxEngineBundle.git"
     }],
     "extra" : {
     "branch-alias" : {

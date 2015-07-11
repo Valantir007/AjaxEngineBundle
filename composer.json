@@ -21,6 +21,8 @@
     },
     "target-dir" : "Valantir/AjaxEngineBundle",
     "repositories" : [{
+        "type" : "vcs",
+        "url" : "https://github.com/Valantir007/AjaxEngineBundle.git"
     }],
     "extra" : {
     "branch-alias" : {

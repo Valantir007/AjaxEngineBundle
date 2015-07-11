@@ -78,7 +78,8 @@ Tested on :
 |:-----------|:------------|:----------|
 |beforeAddClass | calls before engine add class "engine-on" to links and forms|-|
 |afterAddClass | calls after engine add class "engine-on" to links and forms|-|
-|beforeDone | calls before done function - before data from request will be added to ajax-container|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
-|afterDone | calls after done function - after data from request will be added to ajax-container|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
-|beforeAlways | calls before always function|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
-|afterAlways | calls after always function|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
+|beforeDone | calls before ajax done function - before data from request will be added to ajax-container|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
+|afterDone | calls after ajax done function - after data from request will be added to ajax-container|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
+|beforeAlways | calls before ajax always function|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
+|afterAlways | calls after ajax always function|parameters = [{'response': response, 'status': status, 'xhr': xhr}]|
+|beforeSend | calls before ajax beforeSend function|parameters = [{'xhr': xhr: 'settings': settings}]|

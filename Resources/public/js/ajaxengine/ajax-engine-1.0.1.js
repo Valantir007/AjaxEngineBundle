@@ -25,7 +25,7 @@
             fleshMessageClass: 'flesh-message'
         }, settings);
         
-        //klikniecie w link
+        //click links
         function onClick() {
             $('body').on('click', 'a.engine-on', function(e){
                 var $this = $(this),
@@ -38,7 +38,7 @@
             });
         }
         
-        //wysylanie formularzy
+        //submit forms
         function onSubmit() {
             $('body').on('submit', 'form.engine-on', function(e){
                 var $this = $(this);
@@ -62,7 +62,7 @@
             return true;
         }
         
-        //eventy przeglądarki
+        //browser event
         function onHistory() {
             window.onpopstate = function(event) {                
                 ajax({
@@ -79,7 +79,8 @@
             data = $.extend(true, {
                 url: data.url,
                 type: (data.method) ? data.method : 'GET',
-                beforeSend: function(){
+                beforeSend: function(xhr, beforeSettings){
+                    $container.trigger('beforeSend', [{'xhr': xhr, 'settings': beforeSettings}]);
                     settings.ajax.loaderContainer.removeClass('hide');
                 }
             }, data);
@@ -122,14 +123,14 @@
             addEngineClass();
         }
 
-        //adds engine-on class to forms and a tags if action and href attribute are from current host
+        //adds engine-on class to forms and a tags if action and href attribute are from current host and have parents with class defined in settings.offClass
         function addEngineClass() {
             $container.trigger('beforeAddClass');
             $('form:not(.' + settings.offClass + ')').each(function(index, element){
                 var $this = $(element),
                     action = $this.attr('action');
                 
-                //jesli nie ma rodzica, ktory ma klase wylaczajaca silnik i form posiada aktualny host to dodajemy klase
+                //if element has no parents, which they have class defined in settings.offClass and form has action attribute with current host, we add class engine-on
                 if($this.parents('.'+settings.offClass).length === 0) {   
                     if(isCurrentHost(action)) {
                         $this.addClass('engine-on');
@@ -142,7 +143,7 @@
                     host = $this.prop('host'),
                     protocol = $this.prop('protocol');
                     
-                //jesli nie ma rodzica, ktory ma klase wylaczajaca silnik i link posiada aktualny host to dodajemy klase
+                //if element has no parents, which they have class defined in settings.offClass and link has href attribute with current host, we add class engine-on
                 if($this.parents('.'+settings.offClass).length === 0) {    
                     if(isCurrentHost(protocol + '//' + host)) {
                         $this.addClass('engine-on');
@@ -152,7 +153,7 @@
             $container.trigger('afterAddClass');
         }
         
-        //inicjuje eventy
+        //events initialization
         function init() {
             console.log('Ajax-engine has loaded', settings);
             settings.loaded = true;
